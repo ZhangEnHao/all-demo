@@ -5,7 +5,7 @@ import { toJS } from 'mobx';
 import BasicInfo from "../../components/BasicInfo";
 import { BasicInfoList } from "./BasicInfoConfig";
 import state from '../../Store';
-// import Line from '../../components/Charts/Line';
+import Line from '../../components/Charts/Line';
 import imgByone from '../../assets/images/1.jpg';
 
 @observer
@@ -14,6 +14,7 @@ class Statistics extends Component {
   componentDidMount() {
     state.reqLatestDataByController();
     state.reqTodayDataByControllerNo();
+    state.reqYesterdayDataByControllerNo();
   }
 
   render() {
@@ -28,9 +29,9 @@ class Statistics extends Component {
 
           </Col>
         </Row>
-        <Row style={{height: 200, backgroundColor: "#f0f0f0"}}>
-          <Col span={24}>
-          {/* <Line dataSource={{}}/> */}
+        <Row style={{height: 200,}}>
+          <Col span={24} style={{height: 200,}}>
+          <Line dataSource={state.todayData}/>
           </Col>
         </Row>
       </div>

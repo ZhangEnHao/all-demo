@@ -26,15 +26,13 @@ class State {
   @observable todayData = [];
   @action.bound
   reqTodayDataByControllerNo = async (controllerNo="C1681125076") => {
-    const result = await getTodayDataByControllerNo(controllerNo);
-    console.log(result);
+    this.todayData = await getTodayDataByControllerNo(controllerNo);
   }
   // 昨天的数据（以当天的数据对比显示）
   @observable yesterdayData = [];
   @action.bound
   reqYesterdayDataByControllerNo = async (controllerNo="C1681125076") => {
-    const result = await getYesterdayDataByControllerNo(controllerNo);
-    console.log(result);
+    this.todayData = await getYesterdayDataByControllerNo(controllerNo);
   }
 }
 
