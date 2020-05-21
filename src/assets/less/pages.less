@@ -1,0 +1,31 @@
+// 入口根元素
+.root-layout {
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .root-sider {
+    height: 100%;
+    // 左侧导航
+    .root-sider-nav {
+      height: calc(100% - 20px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    // 收缩 ICON
+    .root-collapsible {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, .3);
+    }
+  }
+  
+}
