@@ -21,9 +21,9 @@ class Statistics extends Component {
     return (
       <div style={{paddingTop: 20}}>
         <BasicInfo infos={BasicInfoList} dataSource={state.latestData} />
-        <Row style={{height: 380, width: "100%", backgroundColor: "#d1d1d1"}}>
+        <Row style={{height: 350, width: "100%", backgroundColor: "#d1d1d1"}}>
           <Col span={18}>
-            <img src={imgByone} width="100%" height="100%"/>
+            {/* <img src={imgByone} width="100%" height="100%"/> */}
           </Col>
           <Col span={6}>
 
