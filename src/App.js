@@ -11,9 +11,9 @@ class App extends Component {
       <ConfigProvider locale={zhCN}>
         <HashRouter>
           <Switch>
-            <Route path={`/`}  component={Pages} />
+            <Route path={`/`} exact component={Pages} />
             <Route path={`/login`} exact component={Login} />
-            {/* <Redirect to={`/login`} /> */}
+            <Redirect to={`/login`} />
           </Switch>
         </HashRouter>
       </ConfigProvider>

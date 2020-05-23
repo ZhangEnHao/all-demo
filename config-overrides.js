@@ -1,5 +1,4 @@
 const { override, fixBabelImports, disableEsLint, addDecoratorsLegacy, addLessLoader } = require('customize-cra');
-const white = require("./src/assets/themes/white");
 
 module.exports = override(
   fixBabelImports('import', {
@@ -9,7 +8,6 @@ module.exports = override(
   }),
   addLessLoader({
     javascriptEnabled: true,
-    modifyVars: white,
   }),
   addLessLoader({
     javascriptEnabled: true

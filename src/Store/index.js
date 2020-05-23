@@ -1,9 +1,9 @@
 /* eslint-disable array-callback-return */
-import { observable, action, toJS } from 'mobx';
+import { observable, action } from 'mobx';
 import {
   getLatestDataByController,
   getTodayDataByControllerNo,
-  getYesterdayDataByControllerNo,
+  getWaterTempDataByMachine,
 } from "../api";
 
 class State {
@@ -13,13 +13,7 @@ class State {
   @action.bound
   reqLatestDataByController = async (controllerNo="C1681125076") => {
     const result = await getLatestDataByController(controllerNo);
-    this.latestData = {
-      temperature: result[0].ai3001,
-      eumulativeElectricity: 220,
-      online: 0,
-      voltage: 0,
-      malfunction: 0
-    };
+    this.latestData = result[0];
   }
   
   // 当天的数据（以昨天的数据对比显示）
@@ -28,12 +22,16 @@ class State {
   reqTodayDataByControllerNo = async (controllerNo="C1681125076") => {
     this.todayData = await getTodayDataByControllerNo(controllerNo);
   }
-  // 昨天的数据（以当天的数据对比显示）
-  @observable yesterdayData = [];
+
+  // 出入水温度
+  @observable wterTempData = [];
   @action.bound
-  reqYesterdayDataByControllerNo = async (controllerNo="C1681125076") => {
-    this.todayData = await getYesterdayDataByControllerNo(controllerNo);
+  reqWaterTempDataByMachine = async () => {
+    this.wterTempData = await getWaterTempDataByMachine();
   }
+
+
+
 }
 
 

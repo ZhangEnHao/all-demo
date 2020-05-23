@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import echarts from 'echarts';
 
-export default class Link extends Component {
+export default class WaterLink extends Component {
 
   hexToRgba = (hex, opacity) => {
     let rgbaColor = "";
@@ -16,17 +16,16 @@ export default class Link extends Component {
   }
   getOption = props => {
     let { dataSource } = props;
-    let { time, today, yesterday } = dataSource;
+    let { time, return_temp, output_temp } = dataSource;
     return {
-      backgroundColor: '#fff',
-      title: {
-        text: '冷却回水温度',
-        textStyle: {
-          // color: '#FFF',
-          align: 'right',
-        },
-        right: "center"
-      },
+      // title: {
+      //   // text: 'chu',
+      //   textStyle: {
+      //     color: '#FFF',
+      //     align: 'center',
+      //   }
+      // },
+      backgroundColor: '#0a182b',
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -39,7 +38,7 @@ export default class Link extends Component {
           let result = params[0].name + "<br>";
           params.forEach(function (item) {
             if (item.value !== '-') {
-              result += item.marker + " " + item.seriesName + " : " + item.value + "°C</br>";
+              result += item.marker + " " + item.seriesName + " : " + item.value + "</br>";
             } else {
               result += item.marker + " " + item.seriesName + " :  - </br>";
             }
@@ -47,58 +46,78 @@ export default class Link extends Component {
           return result;
         }
       },
+      grid: {
+        left: '3%',
+        right: '5%',
+        top: '15%',
+        bottom: '5%',
+        containLabel: true
+      },
       legend: {
         show: true,
-        x: 'right',
+        x: 'center',
         top: '0',
         icon: 'stack',
         itemWidth: 10,
         itemHeight: 10,
         textStyle: {
-          color: '#000000'
+          color: '#1bb4f6'
         },
       },
-      grid: {
-        top: 30,
-        bottom: 70,
-        left: 40,
-        right: 40,
-        textStyle: {
-          color: "#fff"
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          axisLabel: {
+            color: '#30eee9'
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#397cbc'
+            }
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: '#195384'
+            }
+          },
+          data: time
         }
-      },
-      calculable: true,
-      xAxis: [{
-        type: "category",
-        axisLabel: {
-          formatter: function (value) { return value; }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: '°C',
+          splitNumber: 3,
+          axisLabel: {
+            formatter: '{value}',
+            textStyle: {
+              color: '#2ad1d2'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#27b4c2'
+            }
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#11366e'
+            }
+          },
+          scale: true
         },
-        splitLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        data: time,
-      }],
-
-      yAxis: [{
-        type: "value",
-        name: '°C',
-        splitNumber: 3,
-        scale: true
-      }],
-      dataZoom: [{
-        show: true,
-        height: 30,
-        xAxisIndex: [0],
-        bottom: 10,
-      }, {
-        type: "inside",
-        show: true,
-        height: 15,
-      }],
-      series: [{ name: "今天", data: today, color: '#675bba' }, { name: "昨天", data: yesterday, color: '#d14a61' }].map(item => {
+      ],
+      series: [{ name: "回水温度", data: return_temp, color: '#00d4c7' }, { name: "出水温度", data: output_temp, color: '#0092f6' }].map(item => {
         return ({
           name: item.name,
           type: "line",
