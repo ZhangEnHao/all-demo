@@ -45,29 +45,29 @@ class Statistics extends Component {
                 <Row className="statistics-row-open" >
                   <Col span={12} className="statistics-row-open-col" >
                     <Button size="small" type="primary" style={{ marginRight: 10 }} >二层主卧</Button>
-                    <InputNumber defaultValue={22} size="small"/>
+                    <InputNumber defaultValue={22} size="small" />
                   </Col>
                   <Col span={12} className="statistics-row-open-col" >
                     <Button size="small" type="primary" style={{ marginRight: 10 }} >二层次卧</Button>
-                    <InputNumber defaultValue={22} size="small"  />
+                    <InputNumber defaultValue={22} size="small" />
                   </Col>
                   <Col span={12} className="statistics-row-open-col" >
                     <Button size="small" type="primary" style={{ marginRight: 10 }} >二层书房</Button>
-                    <InputNumber defaultValue={22} size="small"  />
+                    <InputNumber defaultValue={22} size="small" />
                   </Col>
                   <Col span={12} className="statistics-row-open-col" >
                     <Button size="small" type="primary" style={{ marginRight: 10 }} >二层玄厅</Button>
-                    <InputNumber defaultValue={22} size="small"  />
+                    <InputNumber defaultValue={22} size="small" />
                   </Col>
                 </Row>
                 <Row className="statistics-row-open" >
                   <Col span={12} className="statistics-row-open-col" >
                     <Button size="small" type="primary" style={{ marginRight: 10 }} >三层卧室</Button>
-                    <InputNumber defaultValue={22} size="small"  />
+                    <InputNumber defaultValue={22} size="small" />
                   </Col>
                   <Col span={12} className="statistics-row-open-col" >
                     <Button size="small" type="primary" style={{ marginRight: 10 }} >三层书房</Button>
-                    <InputNumber defaultValue={22} size="small"/>
+                    <InputNumber defaultValue={22} size="small" />
                   </Col>
                 </Row>
               </Col>

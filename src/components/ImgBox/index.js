@@ -10,17 +10,17 @@ class ImgBox extends Component {
     return (
       <div className="img-box">
         <div className="img-floor img-layer">
-          <span style={{ marginRight: 70 }}>{aI3010}°C</span>
+          <span style={{ marginRight: 40 }}>{aI3010}°C</span>
           <span>{aI3034}°C</span>
         </div>
         <div className="img-floor img-second">
-          <span style={{ marginRight: 20 }}>{aI3025}°C</span>
-          <span style={{ marginRight: 20 }}>{aI3027}°C</span>
-          <span style={{ marginRight: 20 }}>{aI3039}°C</span>
-          <span style={{ marginRight: 20 }}>{aI3040}°C</span>
+          <span style={{ marginRight: 15 }}>{aI3025}°C</span>
+          <span style={{ marginRight: 15 }}>{aI3027}°C</span>
+          <span style={{ marginRight: 15 }}>{aI3039}°C</span>
+          <span style={{ marginRight: 15 }}>{aI3040}°C</span>
         </div>
         <div className="img-floor img-three">
-          <span style={{ marginRight: 60 }}>{aI3001}°C</span>
+          <span style={{ marginRight: 50 }}>{aI3001}°C</span>
           <span>{aI3003}°C</span>
         </div>
         <div className="img-new-fan">
