@@ -13,12 +13,20 @@ import "./statistics.less";
 class Statistics extends Component {
 
   componentDidMount() {
-    state.reqLatestDataByController();
-    state.reqTodayDataByControllerNo();
-    state.reqWaterTempDataByMachine();
+    this.timer = setInterval(() => {
+      state.reqLatestDataByController();
+      state.reqTodayDataByControllerNo();
+      state.reqWaterTempDataByMachine();
+    }, 1000);
+  }
+  componentWillUnmount() {
+    /* eslint-disable */
+    this.timer && clearTimeout(this.timer);
+     /* eslint-enable */
   }
 
   render() {
+    console.log("render");
     return (
       <div className="statistics">
         <Row className="statistics-row" style={{ height: "65%" }}>
