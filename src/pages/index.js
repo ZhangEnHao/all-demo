@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Switch, Route, } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Layout, Icon, Row, Col, Dropdown, Menu, Avatar } from 'antd';
+import { Layout, Icon, Menu, } from 'antd';
 import SiderNav from '../components/SiderNav';
 import "../assets/less/pages.less";
 // 所有的页面
-import Statistics from '../pages/Statistics';
-import Floor from '../pages/Floor';
+import ProcessDesign from './change/ProcessDesign';
+import DragModel from "./change/DragModel";
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 @observer
 class Pages extends Component {
@@ -34,15 +33,6 @@ class Pages extends Component {
   render() {
     return (
       <Layout className="root-layout">
-        <Header className="root-header">
-          <Row type="flex" justify="end">
-            <Col span={1}>
-              <Dropdown overlay={this.initMenu}>
-                <Avatar icon="user" />
-              </Dropdown>
-            </Col>
-          </Row>
-        </Header>
         <Layout>
           <Sider
             theme="light"
@@ -57,13 +47,11 @@ class Pages extends Component {
             </div>
           </Sider>
           <Content id="content">
-            {/* <ScrollToTop> */}
             <Switch>
-              <Route path="/" exact component={Statistics} />
-              <Route path="/floor" exact component={Floor} />
-              {/* <Redirect to={`/`} /> */}
+              <Route path="/processDesign" exact component={ProcessDesign} />
+              <Route path="/dragModal" exact component={DragModel} />
+              <Redirect to={`/`} />
             </Switch>
-            {/* </ScrollToTop> */}
           </Content>
         </Layout>
       </Layout>

@@ -3,7 +3,6 @@ import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import Pages from './pages';
-import Login from './pages/Login';
 
 class App extends Component {
   render() {
@@ -12,8 +11,7 @@ class App extends Component {
         <HashRouter>
           <Switch>
             <Route path={`/`} exact component={Pages} />
-            <Route path={`/login`} exact component={Login} />
-            <Redirect to={`/login`} />
+            <Redirect to={`/`} />
           </Switch>
         </HashRouter>
       </ConfigProvider>

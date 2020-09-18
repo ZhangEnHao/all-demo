@@ -4,13 +4,13 @@ export const urlByRoot = "";
 // 项目前端左侧路由设置
 export const siderMenusByRoot = [
   {
-    title: "统计分析",
-    key: `${urlByRoot}/statistics`,
+    title: "流程编辑器",
+    key: `${urlByRoot}/processDesign`,
     icon: "area-chart",
   },
   {
-    title: "楼层展示",
-    key: `${urlByRoot}/floor`,
-    icon: "appstore",
+    title: "dragModal",
+    key: `${urlByRoot}/dragModal`,
+    icon: "file-search",
   },
 ];

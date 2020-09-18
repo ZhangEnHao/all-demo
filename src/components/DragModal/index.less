@@ -1,0 +1,54 @@
+.drag-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .25);
+  pointer-events: none;
+}
+
+.drag-modal {
+  position: relative;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  pointer-events: auto;
+  height: 100%;
+  padding: 0 80px;
+
+  .drag-modal-header {
+    padding: 20px 0;
+    color: #161616;
+    font-size: 18px;
+    font-weight: 600;
+    background: #fff;
+    line-height: 24px;
+    border-radius: 4px 4px 0 0;
+
+
+    .drag-modal-header-close {
+      width: 56px;
+      height: 56px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0;
+      color: rgba(0,0,0,.45);
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      background: 0 0;
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      transition: color .3s;
+    }
+  }
+
+  .drag-modal-body {
+    overflow: auto;
+  }
+}

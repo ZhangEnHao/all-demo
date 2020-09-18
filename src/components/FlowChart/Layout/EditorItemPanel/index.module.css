@@ -1,0 +1,27 @@
+.itemPanel {
+  flex: 1;
+  background: #fafafa;
+}
+.itemPanel :global .ant-collapse {
+  border: none;
+}
+.itemPanel :global .ant-collapse > .ant-collapse-item:last-child {
+  border-radius: 0;
+}
+.itemPanel :global .ant-collapse-header {
+  background: #ffffff;
+}
+.itemPanel :global .ant-collapse-content-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fafafa;
+  padding: 5px;
+}
+.itemPanel :global .ant-collapse-content-box div {
+  margin-bottom: 5px;
+  text-align: center;
+}
+.itemPanel :global .ant-collapse-content-box div:last-child {
+  margin-bottom: 0;
+}

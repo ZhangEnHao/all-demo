@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { message } from 'antd';
+import { message } from '../pages/change/DragModel/antd';
 // import TopProgress from '../components/ScrollToTop';
 
 export default function ajax(url, data = {}, method = 'GET') {
