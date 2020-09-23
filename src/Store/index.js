@@ -1,40 +1,22 @@
-/* eslint-disable array-callback-return */
-import { observable, action } from 'mobx';
-import {
-  getLatestDataByController,
-  getTodayDataByControllerNo,
-  getWaterTempDataByMachine,
-} from "../api";
+// import { observable, action, toJS } from 'mobx';
+// import ajax from '../api/ajax';
+
+import { action, observable } from "mobx";
+
 
 class State {
-  
-  // 存储资源池页面存储设备级别命名查询
-  @observable latestData = {};
+  @observable dataSource = {};
   @action.bound
-  reqLatestDataByController = async (controllerNo="C1681125076") => {
-    const result = await getLatestDataByController(controllerNo);
-    this.latestData = result[0];
+  setDataSourceByCode = (code, data, callback) => {
+    this.dataSource[code] = data;
+    // eslint-disable-next-line no-unused-expressions
+    typeof callback === "function" ? callback() : null;
   }
   
-  // 当天的数据（以昨天的数据对比显示）
-  @observable todayData = [];
-  @action.bound
-  reqTodayDataByControllerNo = async (controllerNo="C1681125076") => {
-    this.todayData = await getTodayDataByControllerNo(controllerNo);
-  }
-
-  // 出入水温度
-  @observable wterTempData = [];
-  @action.bound
-  reqWaterTempDataByMachine = async () => {
-    this.wterTempData = await getWaterTempDataByMachine();
-  }
-
-
 
 }
 
 
-const state = new State()
+const store = new State()
 
-export default state;
+export default store;

@@ -12,7 +12,7 @@ class SiderNav extends Component {
 
   getMenuNodes = menuConfig => {    
     return menuConfig?.map((item, index) => {
-      if (!item.childrens) {
+      if (!item.children) {
         return (
           <Menu.Item key={item.key}>
             <Link to={item.key}>
@@ -32,7 +32,7 @@ class SiderNav extends Component {
               </span>
             }
           >
-            {this.getMenuNodes(item.childrens)}
+            {this.getMenuNodes(item.children)}
           </SubMenu>
         )
       }

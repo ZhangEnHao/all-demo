@@ -9,8 +9,13 @@ export const siderMenusByRoot = [
     icon: "area-chart",
   },
   {
-    title: "dragModal",
+    title: "可拖拽弹框",
     key: `${urlByRoot}/dragModal`,
-    icon: "file-search",
+    icon: "zoom-in",
+  },
+  {
+    title: "页面控件",
+    key: `${urlByRoot}/pageControl`,
+    icon: "reconciliation",
   },
 ];

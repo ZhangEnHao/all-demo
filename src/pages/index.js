@@ -7,6 +7,7 @@ import "../assets/less/pages.less";
 // 所有的页面
 import ProcessDesign from './change/ProcessDesign';
 import DragModel from "./change/DragModel";
+import PageControl from "./change/PageControl";
 
 const { Sider, Content } = Layout;
 
@@ -50,6 +51,8 @@ class Pages extends Component {
             <Switch>
               <Route path="/processDesign" exact component={ProcessDesign} />
               <Route path="/dragModal" exact component={DragModel} />
+              <Route path="/pageControl" exact component={PageControl} />
+
               <Redirect to={`/`} />
             </Switch>
           </Content>
