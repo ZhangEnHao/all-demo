@@ -10,6 +10,7 @@ export const testData = [
     name: "主机查询列表",
     code: "table",
     colSpan: 10,
+    outputFun: () => { },
     property:{
       table: "tree",
     }

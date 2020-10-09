@@ -14,8 +14,13 @@ export const siderMenusByRoot = [
     icon: "zoom-in",
   },
   {
-    title: "页面控件",
-    key: `${urlByRoot}/pageControl`,
+    title: "表单控件配置",
+    key: `${urlByRoot}/pageControl/configView`,
     icon: "reconciliation",
+  },
+  {
+    title: "表单控件渲染",
+    key: `${urlByRoot}/pageControl/renderView`,
+    icon: "form",
   },
 ];
