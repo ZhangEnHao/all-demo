@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Collapse, Row, Col, Form, Input, Radio, Button, Icon } from 'antd';
+import { Collapse, Row, Col, Form, Input, Radio, Switch, } from 'antd';
+import SetOptionsByManual from './SetOptionsByManual';
+import SetOptionsByOther from './SetOptionsByOther';
+import RuleItem from './RuleItem';
 
 const { Panel } = Collapse;
 const { Item } = Form;
@@ -9,7 +12,7 @@ class CollapseForm extends Component {
   state = {
     inputType: "TEXT",
     dataResourcesType: "MANUAL",
-
+    isRequired: false,
   }
 
   // 类型
@@ -17,9 +20,70 @@ class CollapseForm extends Component {
     this.setState({ inputType: e.target.value })
   }
 
-  // 
+  // 选择数据来源
   onDataResourcesTypeChange = e => {
     this.setState({ dataResourcesType: e.target.value })
+  }
+
+  // 设置初始化数据
+  setInitValue = (getFieldDecorator) => {
+    switch (this.state.dataResourcesType) {
+      case "MANUAL":
+        return this.setInitValueByManual(getFieldDecorator);
+      case "CH_COLLECTION":
+        return this.setInitValueByCollection();
+      case "CH_PARAM":
+        return this.setInitValueByParam();
+      default:
+        return false
+    }
+  }
+
+  setInitValueByManual = (getFieldDecorator) => {
+    let initValueItem = null;
+    switch (this.state.inputType) {
+      case "TEXT":
+        initValueItem = (
+          <Col span={24}>
+            <Item label="初始值" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
+              {getFieldDecorator('initValue')(<Input />,)}
+            </Item>
+          </Col>
+        )
+        break;
+      case "SELECT":
+      case "DEIT_SELECT":
+      case "CHECKBOX":
+        initValueItem = <SetOptionsByManual form={this.props.form} />
+        break;
+      default:
+        initValueItem = null;
+    }
+
+    return initValueItem
+  }
+
+  setInitValueByCollection = () => {
+    // 过滤已配置控件为采集表
+    let options = this.props.dataSourceByTable.filter(item => {
+      return item.controlType === "Collect"
+    })
+
+    return <SetOptionsByOther options={options} form={this.props.form} />
+  }
+
+  setInitValueByParam = () => {
+    // 过滤已配置控件为采集表
+    let options = this.props.dataSourceByTable.filter(item => {
+      return item.controlType === "ParameterEntry"
+    })
+
+    return <SetOptionsByOther options={options} form={this.props.form} />
+  }
+
+  // 是否必填
+  requiredChange = checked => {
+    this.setState({ isRequired: checked })
   }
 
   componentDidMount() {
@@ -92,48 +156,43 @@ class CollapseForm extends Component {
                   </Item>
                 </Col>
             }
-            {
-              (this.state.inputType === "CALENDAR" || this.state.inputType === "TIME") ? null :
-                (
-                  this.state.inputType === "TEXT" ?
-                    (
-                      <Col span={24}>
-                        <Item label="初始值" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
-                          {getFieldDecorator('initValue')(<Input />,)}
-                        </Item>
-                      </Col>
-                    ) : (
-                      <>
-                        <Col span={24}>
-                          
-                        </Col>
-                        <Col span={24} style={{textAlign: "center"}}>
-                          <Button type="dashed" style={{ width: '60%' }}>
-                            <Icon type="plus" /> Add Option
-                          </Button>
-                        </Col>
-                      </>
-                      // <Col span={24}>
-                      //   <Item label="初始值" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
-                      //     {getFieldDecorator('initValue')(
-                      //       <Input />,
-                      //     )}
-                      //   </Item>
-                      // </Col>
-                    )
-                )
-            }
-
+            {this.setInitValue(getFieldDecorator)}
           </Row>
-
-
-
         </Panel>
         <Panel header="列关联设置" key="2" {...panelProps}>
           <p>text</p>
         </Panel>
         <Panel header="验证设置" key="3" {...panelProps}>
-          <p>text</p>
+          <Row>
+            <Col span={4}>
+              <Item label="必填" labelCol={{ span: 12 }} wrapperCol={{ span: 12 }}>
+                {getFieldDecorator('required', {
+                  // initialValue: ,
+                  valuePropName: "checked"
+                })(
+                  <Switch onChange={this.requiredChange} />
+                )}
+              </Item>
+            </Col>
+            {
+              this.state.isRequired ?
+                <Col span={20}>
+                  <Item label="提示信息" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
+                    {getFieldDecorator('message', {
+                      // initialValue: ,
+                    })(
+                      <Input placeholder="请输入错误提示信息" />
+                    )}
+                  </Item>
+                </Col>
+                : null
+            }
+          </Row>
+          {
+            this.state.isRequired ?
+              <RuleItem form={this.props.form} />
+              : null
+          }
         </Panel>
       </Collapse>
     )

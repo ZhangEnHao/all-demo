@@ -50,7 +50,11 @@ class ConfigByRender extends Component {
   };
 
   handleChildrenDrawerOk = () => {
-
+    this.form.validateFields(async (error, values) => {
+      if (!error) {
+        console.log(values);
+      }
+    })
   }
 
   render() {
@@ -127,6 +131,7 @@ class ConfigByRender extends Component {
               </Col>
               <Col span={24} style={{ maxHeight: "70vh", overflow: "auto" }}>
                 <CollapseForm
+                  dataSourceByTable={this.props.dataSourceByTable}
                   setForm={form => { this.form = form }} />
               </Col>
             </Row>

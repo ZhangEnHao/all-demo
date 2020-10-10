@@ -112,6 +112,14 @@ class ConfigView extends Component {
     localStorage.setItem("controlsConfig", JSON.stringify(this.state.dataSourceByTable));
   }
 
+  componentDidMount() {
+    let controlsConfig = JSON.parse(localStorage.getItem("controlsConfig"));
+    this.setState({
+      dataSourceByTable: controlsConfig
+    })
+
+  }
+
   render() {
     return (<Card>
       <Row>
@@ -128,7 +136,7 @@ class ConfigView extends Component {
           />
         </Col>
         <Col span={4}>
-          <Button onClick={this.saveControlsConfig()} type="primary">保存</Button>
+          <Button onClick={this.saveControlsConfig} type="primary">保存</Button>
         </Col>
       </Row>
       <Drawer
