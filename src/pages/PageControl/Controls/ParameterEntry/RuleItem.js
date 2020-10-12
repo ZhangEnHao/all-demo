@@ -20,13 +20,13 @@ class StartStop extends Component {
 
   onRadioGroupChange = e => {
     if(e.target.value === "english") {
-      this.setState({disableByEnglish: false})
+      this.setState({disableByEnglish: false, disableByOther: true, })
     }else if(e.target.value === "other") {
-      this.setState({disableByOther: false})
+      this.setState({disableByEnglish: true, disableByOther: false})
     }else {
       this.setState({disableByEnglish: true, disableByOther: true, })
     }
-    this.triggerChange({ checktype: e.target.value });
+    this.triggerChange({ dataType: e.target.value });
   }
 
   otherValueChange = e => {
@@ -43,23 +43,29 @@ class StartStop extends Component {
     }
   };
 
+  clearSelect = () => {
+    this.setState({disableByEnglish: true, disableByOther: true, }, () => {
+      this.props.clear()
+    })
+  }
+
   render() {
-    // let { value } = this.props;
+    let { name, value, } = this.props;
     return (
       <div style={{ display: "flex", height: 40, alignItems: "center" }}>
-        <Radio.Group onChange={this.onRadioGroupChange} style={{ flex: "0 0 auto" }}>
+        <Radio.Group value={value.dataType} onChange={this.onRadioGroupChange} name={name} style={{ flex: "0 0 auto" }}>
           <Radio value="english">英文</Radio>
-          <Checkbox onChange={e => this.onCheckboxChange(e, "uppercase")} disabled={this.state.disableByEnglish}>大写</Checkbox>
-          <Checkbox onChange={e => this.onCheckboxChange(e, "lowercase")} disabled={this.state.disableByEnglish}>小写</Checkbox>
+          <Checkbox checked={value.uppercase} onChange={e => this.onCheckboxChange(e, "uppercase")} disabled={this.state.disableByEnglish}>大写</Checkbox>
+          <Checkbox checked={value.lowercase} onChange={e => this.onCheckboxChange(e, "lowercase")} disabled={this.state.disableByEnglish}>小写</Checkbox>
           <Radio value="number">数字</Radio>
           <Radio value="other">其他</Radio>
         </Radio.Group>
         <Input
-          // value={value.otherValue}
+          value={value.otherValue}
           onChange={this.otherValueChange}
           disabled={this.state.disableByOther}
           style={{ flex: "1 1 auto", marginRight: 10, }} />
-        <Button type="danger" style={{ flex: "0 0 auto" }}>清除</Button>
+        <Button onClick={this.clearSelect} type="danger" style={{ flex: "0 0 auto" }}>清除</Button>
       </div>
     )
   }
@@ -171,6 +177,10 @@ class LengthConstraint extends Component {
 // 字符串校验规则组件
 class ItemByString extends Component {
 
+  clearStartStop = (code) => {
+    this.props.form.setFieldsValue({ [code]: {dataType: undefined, uppercase: false, lowercase: false, otherValue: undefined}, });
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (<>
@@ -202,23 +212,23 @@ class ItemByString extends Component {
       </Row>
       <Item label={<span>全部为<span style={{ color: "red" }}>[或]</span></span>} {...formItemLayout}>
         {getFieldDecorator('mustIn', {
-          initialValue: { checkValue: [], otherValue: null },
+          initialValue: { checkValue: [], otherValue: undefined },
         })(<CheckboxList />)}
       </Item>
       <Item label={<span>必须含<span style={{ color: "red" }}>[且]</span></span>} {...formItemLayout}>
         {getFieldDecorator('mustContain', {
-          initialValue: { checkValue: [], otherValue: null },
+          initialValue: { checkValue: [], otherValue: undefined },
         })(<CheckboxList />)}
       </Item>
       <Item label="字符开头" {...formItemLayout}>
         {getFieldDecorator('startWith', {
-          // initialValue: ,
-        })(<StartStop />)}
+          initialValue: { dataType: undefined, uppercase: false, lowercase: false, otherValue: undefined },
+        })(<StartStop name="startWith" clear={() => this.clearStartStop("startWith")} />)}
       </Item>
       <Item label="字符结尾" {...formItemLayout}>
         {getFieldDecorator('endWith', {
-          // initialValue: ,
-        })(<StartStop />)}
+          initialValue: { dataType: undefined, uppercase: false, lowercase: false, otherValue: undefined },
+        })(<StartStop name="endWith" clear={() => this.clearStartStop("endWith")} />)}
       </Item>
       <Item label="不包含字符" {...formItemLayout}>
         {getFieldDecorator('notContain', {
