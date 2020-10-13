@@ -17,36 +17,39 @@ class CollapseForm extends Component {
 
   // 类型
   onInputTypeChange = (e) => {
-    this.setState({ inputType: e.target.value })
+    this.setState({ inputType: e.target.value, dataSource: {} })
   }
 
   // 选择数据来源
   onDataResourcesTypeChange = e => {
-    this.setState({ dataResourcesType: e.target.value })
+    this.setState({ dataResourcesType: e.target.value, dataSource: {} })
   }
 
   // 设置初始化数据
-  setInitValue = (getFieldDecorator) => {
-    switch (this.state.dataResourcesType) {
+  setInitValue = (getFieldDecorator, dataSource={}) => {
+    let dataResourcesType = this.state.dataResourcesType;
+    switch (dataResourcesType) {
       case "MANUAL":
-        return this.setInitValueByManual(getFieldDecorator);
+        return this.setInitValueByManual(getFieldDecorator, dataSource);
       case "CH_COLLECTION":
-        return this.setInitValueByCollection();
+        return this.setInitValueByCollection(dataSource);
       case "CH_PARAM":
-        return this.setInitValueByParam();
+        return this.setInitValueByParam(dataSource);
       default:
         return false
     }
   }
 
-  setInitValueByManual = (getFieldDecorator) => {
+  setInitValueByManual = (getFieldDecorator, dataSource) => {
     let initValueItem = null;
-    switch (this.state.inputType) {
+    switch (this.state.inputType || dataSource.inputType) {
       case "TEXT":
         initValueItem = (
           <Col span={24}>
             <Item label="初始值" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
-              {getFieldDecorator('initValue')(<Input />,)}
+              {getFieldDecorator('initValue', {
+                initialValue: dataSource.initValue,
+              })(<Input />,)}
             </Item>
           </Col>
         )
@@ -54,7 +57,7 @@ class CollapseForm extends Component {
       case "SELECT":
       case "DEIT_SELECT":
       case "CHECKBOX":
-        initValueItem = <SetOptionsByManual form={this.props.form} />
+        initValueItem = <SetOptionsByManual dataSource={dataSource} form={this.props.form} />
         break;
       default:
         initValueItem = null;
@@ -63,22 +66,22 @@ class CollapseForm extends Component {
     return initValueItem
   }
 
-  setInitValueByCollection = () => {
+  setInitValueByCollection = (dataSource) => {
     // 过滤已配置控件为采集表
     let options = this.props.dataSourceByTable.filter(item => {
       return item.controlType === "Collect"
     })
 
-    return <SetOptionsByOther options={options} form={this.props.form} />
+    return <SetOptionsByOther dataSource={dataSource} options={options} form={this.props.form} />
   }
 
-  setInitValueByParam = () => {
+  setInitValueByParam = (dataSource) => {
     // 过滤已配置控件为采集表
     let options = this.props.dataSourceByTable.filter(item => {
       return item.controlType === "ParameterEntry"
     })
 
-    return <SetOptionsByOther options={options} form={this.props.form} />
+    return <SetOptionsByOther dataSource={dataSource} options={options} form={this.props.form} />
   }
 
   // 是否必填
@@ -86,14 +89,32 @@ class CollapseForm extends Component {
     this.setState({ isRequired: checked })
   }
 
+  initRuleItem = (dataSource={}) => {
+    let flag = false
+    if(this.state.isRequired && this.state.inputType !== "CALENDAR" && this.state.inputType !== "TIME"){
+      flag = true;
+    }
+    if(dataSource.required && dataSource.inputType !== "CALENDAR" && dataSource.inputType !== "TIME") {
+      flag = true;
+    }
+    if(flag) {
+      return <RuleItem dataSource={dataSource} options={this.props.dataSourceByTable} form={this.props.form} />
+    }
+  }
+
   componentDidMount() {
     this.props.setForm(this.props.form);
+    this.setState({
+      inputType: this.props.dataSource.inputType || "TEXT",
+      dataResourcesType: this.props.dataSource.dataResourcesType || "MANUAL",
+      isRequired: this.props.dataSource.required || false,
+      dataSource: this.props.dataSource || {},
+    })
   }
 
   render() {
-    let panelProps = {
-      showArrow: false,
-    }
+    let panelProps = { showArrow: false, }
+    let { dataSource={} } = this.props;
 
     const { getFieldDecorator } = this.props.form;
 
@@ -104,6 +125,7 @@ class CollapseForm extends Component {
             <Col span={12}>
               <Item label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
                 {getFieldDecorator('colName', {
+                  initialValue: dataSource.colName,
                   rules: [{ required: true, message: '请输入列名称!', },],
                 })(<Input placeholder="请输入列名称" />)}
               </Item>
@@ -111,6 +133,7 @@ class CollapseForm extends Component {
             <Col span={12}>
               <Item label="编码" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }} >
                 {getFieldDecorator('colCode', {
+                  initialValue: dataSource.colCode,
                   rules: [{ required: true, message: '请输入列编码!', },],
                 })(<Input placeholder="请输入列编码" />)}
               </Item>
@@ -119,13 +142,15 @@ class CollapseForm extends Component {
           <Row>
             <Col span={24}>
               <Item label="提示信息" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
-                {getFieldDecorator('colPromptMessage', {})(<Input placeholder="请输入列提示信息" />)}
+                {getFieldDecorator('colPromptMessage', {
+                  initialValue: dataSource.colPromptMessage,
+                })(<Input placeholder="请输入列提示信息" />)}
               </Item>
             </Col>
             <Col span={24}>
               <Item label="类型" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
                 {getFieldDecorator('inputType', {
-                  initialValue: "TEXT",
+                  initialValue: dataSource.inputType || "TEXT",
                   rules: [{ required: true, message: '请输入列类型!', },],
                 })(
                   <Radio.Group onChange={this.onInputTypeChange}>
@@ -144,7 +169,7 @@ class CollapseForm extends Component {
                 <Col span={24}>
                   <Item label="数据来源" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
                     {getFieldDecorator('dataResourcesType', {
-                      initialValue: "MANUAL",
+                      initialValue: dataSource.dataResourcesType || "MANUAL",
                       rules: [{ required: true, message: '请输入列数据来源!', },],
                     })(
                       <Radio.Group onChange={this.onDataResourcesTypeChange}>
@@ -156,7 +181,7 @@ class CollapseForm extends Component {
                   </Item>
                 </Col>
             }
-            {this.setInitValue(getFieldDecorator)}
+            {this.setInitValue(getFieldDecorator, this.state.dataSource)}
           </Row>
         </Panel>
         <Panel header="列关联设置" key="2" {...panelProps}>
@@ -167,7 +192,7 @@ class CollapseForm extends Component {
             <Col span={4}>
               <Item label="必填" labelCol={{ span: 12 }} wrapperCol={{ span: 12 }}>
                 {getFieldDecorator('required', {
-                  // initialValue: ,
+                  initialValue: dataSource.required,
                   valuePropName: "checked"
                 })(
                   <Switch onChange={this.requiredChange} />
@@ -175,11 +200,11 @@ class CollapseForm extends Component {
               </Item>
             </Col>
             {
-              this.state.isRequired ?
+              (this.state.isRequired || dataSource.required) ?
                 <Col span={20}>
                   <Item label="提示信息" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
                     {getFieldDecorator('message', {
-                      // initialValue: ,
+                      initialValue: dataSource.message,
                     })(
                       <Input placeholder="请输入错误提示信息" />
                     )}
@@ -188,11 +213,7 @@ class CollapseForm extends Component {
                 : null
             }
           </Row>
-          {
-            this.state.isRequired ?
-              <RuleItem form={this.props.form} />
-              : null
-          }
+          { this.initRuleItem(dataSource) }
         </Panel>
       </Collapse>
     )

@@ -48,13 +48,13 @@ class EditForm extends Component {
     selectValue: {}, // 保存各个组件选中的值
   }
 
-  initLiveProps = (LiveProps, dataSource, getFieldDecorator, dataSourceByTable) => {
+  initLiveProps = (LiveProps, dataSource, form, dataSourceByTable) => {
     if(LiveProps) {
       return (
         <LiveProps
           dataSource={dataSource}
           dataSourceByTable={dataSourceByTable}
-          getFieldDecorator={getFieldDecorator}
+          form={form}
           />
       )
     }else {
@@ -430,7 +430,7 @@ class EditForm extends Component {
           {/* 控件私有属性 */}
           {this.initPrivateProps(this.state.privateProps, dataSource.privateProps, getFieldDecorator)}
           {/* 控件 动态渲染 属性 */}
-          {this.initLiveProps(this.state.liveProps, dataSource, getFieldDecorator, this.props.dataSourceByTable)}
+          {this.initLiveProps(this.state.liveProps, dataSource, this.props.form, this.props.dataSourceByTable)}
         </Form>
       </Card>
     )

@@ -31,5 +31,5 @@ export default {
       ]
     },
   ],
-  liveProps: require("./ConfigByRender.js").default,
+  liveProps: require("./Config/ConfigByRender.js").default,
 }

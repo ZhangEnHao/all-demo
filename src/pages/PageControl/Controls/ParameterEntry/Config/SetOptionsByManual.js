@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
-import { Row, Col, Form, Select, Input, Button, Icon } from 'antd';
+import { Row, Col, Form, Input, Button, Icon } from 'antd';
 
 const { Item } = Form;
-const { Option } = Select;
 
 class Options extends Component {
-
-  initOptions = (data=[]) => {
-    return data.map((item, index) => {
-      return <Option value={item.code} key={index}>{item.name}</Option>
-    })
-  }
-
-  handleTableIdChange = value => {
-    this.triggerChange({ tableId: value });
+  handleCodeChange = e => {
+    this.triggerChange({ code: e.target.value });
   };
 
-  handleColCodeChange = e => {
-    this.triggerChange({ colCode: e.target.value });
+  handleLabelChange = e => {
+    this.triggerChange({ label: e.target.value });
   };
 
   triggerChange = changedValue => {
@@ -34,21 +26,20 @@ class Options extends Component {
     const { size, value } = this.props;
     return (
       <>
-        <Select
-          value={value.tableId}
-          size={size}
-          onChange={this.handleTableIdChange}
-          style={{ width: '40%', marginRight: '8%' }}
-          placeholder="请选择采集表"
-        >
-          {this.initOptions(this.props.options)}
-        </Select>
         <Input
           type="text"
           size={size}
-          value={value.colCode}
-          onChange={this.handleColCodeChange}
-          placeholder="请输入列编码"
+          value={value.code}
+          onChange={this.handleCodeChange}
+          placeholder="请输入编码"
+          style={{ width: '40%', marginRight: '8%' }}
+        />
+        <Input
+          type="text"
+          size={size}
+          value={value.label}
+          onChange={this.handleLabelChange}
+          placeholder="请输入名称"
           style={{ width: '40%', marginRight: '8%' }}
         ></Input>
       </>
@@ -58,17 +49,12 @@ class Options extends Component {
 
 let id = 0;
 
-export default class SetOptionsByOther extends Component {
+export default class SetOptionsByManual extends Component {
   remove = k => {
     const { form } = this.props;
-    // can use data-binding to get
     const keys = form.getFieldValue('keys');
-    // We need at least one passenger
-    if (keys.length === 1) {
-      return;
-    }
+    if (keys.length === 1) { return; }
 
-    // can use data-binding to set
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
     });
@@ -76,28 +62,19 @@ export default class SetOptionsByOther extends Component {
 
   add = () => {
     const { form } = this.props;
-    // can use data-binding to get
     const keys = form.getFieldValue('keys');
     const nextKeys = keys.concat(id++);
-    // can use data-binding to set
-    // important! notify form to detect changes
-    form.setFieldsValue({
-      keys: nextKeys,
-    });
+    form.setFieldsValue({ keys: nextKeys, });
   };
 
-
   checkOptions = (rule, value, callback) => {
-    let { tableId, colCode } = value;
-    if(!tableId || !colCode) {
-      callback("表名称和列编码必填")
-    }
+    let { code, label } = value;
+    if(!code || !label) { callback("名称和编码必填") }
     callback()
   };
 
-
   render() {
-
+    const { dataSource } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -115,7 +92,11 @@ export default class SetOptionsByOther extends Component {
         sm: { span: 20, offset: 4 },
       },
     };
-    getFieldDecorator('keys', { initialValue: [] });
+    if(dataSource.keys) {
+      getFieldDecorator('keys', { initialValue: dataSource.keys });
+    }else {
+      getFieldDecorator('keys', { initialValue: [] });
+    }
     const keys = getFieldValue('keys');
     const formItems = keys.map((k, index) => (
       <Form.Item
@@ -126,9 +107,9 @@ export default class SetOptionsByOther extends Component {
       >
         {getFieldDecorator(`options[${k}]`, {
           validateTrigger: ['onChange', 'onBlur'],
-          initialValue: { tableId: null, colCode: null },
+          initialValue: (dataSource.options && dataSource.options[index]) || { code: null, label: null },
           rules: [{ validator: this.checkOptions }],
-        })(<Options options={this.props.options} />)}
+        })(<Options />)}
         {keys.length > 1 ? (
           <Icon type="minus-circle-o" onClick={() => this.remove(k)} />
         ) : null}
