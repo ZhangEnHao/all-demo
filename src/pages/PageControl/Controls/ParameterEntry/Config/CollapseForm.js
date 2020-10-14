@@ -3,6 +3,7 @@ import { Collapse, Row, Col, Form, Input, Radio, Switch, } from 'antd';
 import SetOptionsByManual from './SetOptionsByManual';
 import SetOptionsByOther from './SetOptionsByOther';
 import RuleItem from './RuleItem';
+import ColumnAssociation from './ColumnAssociation';
 
 const { Panel } = Collapse;
 const { Item } = Form;
@@ -26,7 +27,7 @@ class CollapseForm extends Component {
   }
 
   // 设置初始化数据
-  setInitValue = (getFieldDecorator, dataSource={}) => {
+  setInitValue = (getFieldDecorator, dataSource = {}) => {
     let dataResourcesType = this.state.dataResourcesType;
     switch (dataResourcesType) {
       case "MANUAL":
@@ -89,15 +90,15 @@ class CollapseForm extends Component {
     this.setState({ isRequired: checked })
   }
 
-  initRuleItem = (dataSource={}) => {
+  initRuleItem = (dataSource = {}) => {
     let flag = false
-    if(this.state.isRequired && this.state.inputType !== "CALENDAR" && this.state.inputType !== "TIME"){
+    if (this.state.isRequired && this.state.inputType !== "CALENDAR" && this.state.inputType !== "TIME") {
       flag = true;
     }
-    if(dataSource.required && dataSource.inputType !== "CALENDAR" && dataSource.inputType !== "TIME") {
+    if (dataSource.required && dataSource.inputType !== "CALENDAR" && dataSource.inputType !== "TIME") {
       flag = true;
     }
-    if(flag) {
+    if (flag) {
       return <RuleItem dataSource={dataSource} options={this.props.dataSourceByTable} form={this.props.form} />
     }
   }
@@ -114,7 +115,7 @@ class CollapseForm extends Component {
 
   render() {
     let panelProps = { showArrow: false, }
-    let { dataSource={} } = this.props;
+    let { dataSource = {} } = this.props;
 
     const { getFieldDecorator } = this.props.form;
 
@@ -185,7 +186,10 @@ class CollapseForm extends Component {
           </Row>
         </Panel>
         <Panel header="列关联设置" key="2" {...panelProps}>
-          <p>text</p>
+          <ColumnAssociation 
+            dataSource={dataSource}
+            options={this.props.dataSourceByColTable}
+            form={this.props.form} />
         </Panel>
         <Panel header="验证设置" key="3" {...panelProps}>
           <Row>
@@ -194,9 +198,7 @@ class CollapseForm extends Component {
                 {getFieldDecorator('required', {
                   initialValue: dataSource.required,
                   valuePropName: "checked"
-                })(
-                  <Switch onChange={this.requiredChange} />
-                )}
+                })(<Switch onChange={this.requiredChange} />)}
               </Item>
             </Col>
             {
@@ -205,15 +207,13 @@ class CollapseForm extends Component {
                   <Item label="提示信息" labelCol={{ span: 2 }} wrapperCol={{ span: 22 }}>
                     {getFieldDecorator('message', {
                       initialValue: dataSource.message,
-                    })(
-                      <Input placeholder="请输入错误提示信息" />
-                    )}
+                    })(<Input placeholder="请输入错误提示信息" />)}
                   </Item>
                 </Col>
                 : null
             }
           </Row>
-          { this.initRuleItem(dataSource) }
+          {this.initRuleItem(dataSource)}
         </Panel>
       </Collapse>
     )

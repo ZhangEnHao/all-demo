@@ -176,9 +176,9 @@ class LengthConstraint extends Component {
     const { value } = this.props;
     return (
       <>
-        <InputNumber value={value.min} min={0} onChange={this.handleMinChange} style={{ width: '30%', marginRight: '5%' }} />
+        <InputNumber value={value.min} min={0} onChange={this.handleMinChange} style={{ width: '16%', marginRight: 20 }} />
         至
-        <InputNumber value={value.max} min={value.min + 1} onChange={this.handleMaxChange} style={{ width: '30%', marginRight: '5%', marginLeft: '5%' }} />
+        <InputNumber value={value.max} min={value.min + 1} onChange={this.handleMaxChange} style={{ width: '16%', marginLeft: 20 }} />
       </>
     );
   }

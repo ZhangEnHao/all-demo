@@ -231,6 +231,7 @@ class ConfigByRender extends Component {
                 <CollapseForm
                   dataSource={this.state.dataByColTable}
                   dataSourceByTable={this.props.dataSourceByTable}
+                  dataSourceByColTable={this.props.form.getFieldsValue(["chParamTableColList"]).chParamTableColList}
                   setForm={form => { this.form = form }} />
               </Col>
             </Row>
