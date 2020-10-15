@@ -47,24 +47,24 @@ class Options extends Component {
   }
 }
 
-let id = 0;
+let idByManual = 0;
 
 export default class SetOptionsByManual extends Component {
   remove = k => {
     const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    if (keys.length === 1) { return; }
+    const keysByManual = form.getFieldValue('keysByManual');
+    if (keysByManual.length === 1) { return; }
 
     form.setFieldsValue({
-      keys: keys.filter(key => key !== k),
+      keysByManual: keysByManual.filter(key => key !== k),
     });
   };
 
   add = () => {
     const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(id++);
-    form.setFieldsValue({ keys: nextKeys, });
+    const keysByManual = form.getFieldValue('keysByManual');
+    const nextkeysByManual = keysByManual.concat(idByManual++);
+    form.setFieldsValue({ keysByManual: nextkeysByManual, });
   };
 
   checkOptions = (rule, value, callback) => {
@@ -72,6 +72,15 @@ export default class SetOptionsByManual extends Component {
     if(!code || !label) { callback("名称和编码必填") }
     callback()
   };
+
+  componentDidMount() {
+    const { dataSource } = this.props;
+    if(dataSource.keysByManual) {
+      idByManual = dataSource.keysByManual.length;
+    }else {
+      idByManual = 0;
+    }
+  }
 
   render() {
     const { dataSource } = this.props;
@@ -92,13 +101,13 @@ export default class SetOptionsByManual extends Component {
         sm: { span: 20, offset: 4 },
       },
     };
-    if(dataSource.keys) {
-      getFieldDecorator('keys', { initialValue: dataSource.keys });
+    if(dataSource.keysByManual) {
+      getFieldDecorator('keysByManual', { initialValue: dataSource.keysByManual });
     }else {
-      getFieldDecorator('keys', { initialValue: [] });
+      getFieldDecorator('keysByManual', { initialValue: [] });
     }
-    const keys = getFieldValue('keys');
-    const formItems = keys.map((k, index) => (
+    const keysByManual = getFieldValue('keysByManual');
+    const formItems = keysByManual.map((k, index) => (
       <Form.Item
         {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
         label={index === 0 ? '初始下拉选项' : ''}
@@ -110,7 +119,7 @@ export default class SetOptionsByManual extends Component {
           initialValue: (dataSource.options && dataSource.options[index]) || { code: null, label: null },
           rules: [{ validator: this.checkOptions }],
         })(<Options />)}
-        {keys.length > 1 ? (
+        {keysByManual.length > 1 ? (
           <Icon type="minus-circle-o" onClick={() => this.remove(k)} />
         ) : null}
       </Form.Item>

@@ -37,7 +37,7 @@ class CollapseForm extends Component {
       case "CH_PARAM":
         return this.setInitValueByParam(dataSource);
       default:
-        return false
+        return null
     }
   }
 

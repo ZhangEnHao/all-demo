@@ -56,22 +56,22 @@ class Options extends Component {
   }
 }
 
-let id = 0;
+let idByOther = 0;
 
 export default class SetOptionsByOther extends Component {
   remove = k => {
     const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    if (keys.length === 1) { return;}
+    const keysByOther = form.getFieldValue('keysByOther');
+    if (keysByOther.length === 1) { return;}
 
-    form.setFieldsValue({ keys: keys.filter(key => key !== k), });
+    form.setFieldsValue({ keysByOther: keysByOther.filter(key => key !== k), });
   };
 
   add = () => {
     const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(id++);
-    form.setFieldsValue({ keys: nextKeys, });
+    const keysByOther = form.getFieldValue('keysByOther');
+    const nextkeysByOther = keysByOther.concat(idByOther++);
+    form.setFieldsValue({ keysByOther: nextkeysByOther, });
   };
 
 
@@ -83,6 +83,14 @@ export default class SetOptionsByOther extends Component {
     callback()
   };
 
+  componentDidMount() {
+    const { dataSource } = this.props;
+    if(dataSource.keysByOther) {
+      idByOther = dataSource.keysByOther.length;
+    }else {
+      idByOther = 0;
+    }
+  }
 
   render() {
     const { dataSource } = this.props;
@@ -103,13 +111,13 @@ export default class SetOptionsByOther extends Component {
         sm: { span: 20, offset: 4 },
       },
     };
-    if(dataSource.keys) {
-      getFieldDecorator('keys', { initialValue: dataSource.keys });
+    if(dataSource.keysByOther) {
+      getFieldDecorator('keysByOther', { initialValue: dataSource.keysByOther });
     }else {
-      getFieldDecorator('keys', { initialValue: [] });
+      getFieldDecorator('keysByOther', { initialValue: [] });
     }
-    const keys = getFieldValue('keys');
-    const formItems = keys.map((k, index) => (
+    const keysByOther = getFieldValue('keysByOther');
+    const formItems = keysByOther.map((k, index) => (
       <Form.Item
         {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
         label={index === 0 ? '初始下拉选项' : ''}
@@ -121,7 +129,7 @@ export default class SetOptionsByOther extends Component {
           initialValue: (dataSource.options && dataSource.options[index]) || { tableId: null, colCode: null },
           rules: [{ validator: this.checkOptions }],
         })(<Options options={this.props.options} />)}
-        {keys.length > 1 ? (
+        {keysByOther.length > 1 ? (
           <Icon type="minus-circle-o" onClick={() => this.remove(k)} />
         ) : null}
       </Form.Item>

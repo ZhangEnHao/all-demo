@@ -48,7 +48,7 @@ class ColInfo extends Component {
   }
 }
 
-let id = 0;
+let idByColAss = 0;
 
 export default class ColumnAssociation extends Component {
 
@@ -62,7 +62,7 @@ export default class ColumnAssociation extends Component {
   add = () => {
     const { form } = this.props;
     const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(id++);
+    const nextKeys = keys.concat(idByColAss++);
     form.setFieldsValue({ keys: nextKeys, });
   };
 
@@ -73,6 +73,15 @@ export default class ColumnAssociation extends Component {
     }
     callback()
   };
+
+  componentDidMount() {
+    const { dataSource } = this.props;
+    if(dataSource.keys) {
+      idByColAss = dataSource.keys.length;
+    }else {
+      idByColAss = 0;
+    }
+  }
 
   render() {
     let { dataSource, options } = this.props;
