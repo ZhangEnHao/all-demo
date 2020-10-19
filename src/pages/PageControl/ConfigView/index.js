@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Button, Table, Drawer, message, Input, Form } from 'antd';
+import { Card, Row, Col, Button, Table, Drawer, message,  } from 'antd';
 import EditForm from './EditForm';
 import Controls from '../Controls';
 import { typeJudgment } from '../utils';
@@ -104,7 +104,13 @@ class ConfigView extends Component {
 
   // 控件信息表格展开详细信息
   initExpandedRow = record => {
-
+    return (
+      <EditForm
+        dataSourceByTable={this.state.dataSourceByTable}
+        indexByEditForm={this.state.indexByEditForm}
+        dataSource={record}
+        setForm={form => { this.form = form }} />
+    )
   }
 
   // 保存所有控件信息
@@ -120,39 +126,39 @@ class ConfigView extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: { xs: { span: 24 }, sm: { span: 2 }, },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 22 }, },
-    };
+    // const { getFieldDecorator } = this.props.form;
+    // const formItemLayout = {
+    //   labelCol: { xs: { span: 24 }, sm: { span: 2 }, },
+    //   wrapperCol: { xs: { span: 24 }, sm: { span: 22 }, },
+    // };
 
     return (<Card>
-      <Form {...formItemLayout}>
-        <Row>
-          <Col span={12} style={{ marginBottom: 15 }}>
+      {/* <Form {...formItemLayout}> */}
+      <Row>
+        {/* <Col span={12} style={{ marginBottom: 15 }}>
             <Form.Item label="名称">
               {getFieldDecorator('name', {
                 rules: [{ required: true, },],
               })(<Input />)}
             </Form.Item>
-          </Col>
-          <Col span={24} style={{ marginBottom: 15 }}>
-            <Button onClick={this.showDrawer} type="primary">新增</Button>
-          </Col>
-          <Col span={24} style={{ marginBottom: 15 }}>
-            <Table
-              pagination={false}
-              rowKey="rowKey"
-              columns={this.initColumns()}
-              dataSource={this.state.dataSourceByTable}
-              expandedRowRender={record => this.initExpandedRow(record)}
-            />
-          </Col>
-          <Col span={4}>
-            <Button onClick={this.saveControlsConfig} type="primary">保存</Button>
-          </Col>
-        </Row>
-      </Form>
+          </Col> */}
+        <Col span={24} style={{ marginBottom: 15 }}>
+          <Button onClick={this.showDrawer} type="primary">新增</Button>
+        </Col>
+        <Col span={24} style={{ marginBottom: 15 }}>
+          <Table
+            pagination={false}
+            rowKey="rowKey"
+            columns={this.initColumns()}
+            dataSource={this.state.dataSourceByTable}
+            expandedRowRender={record => this.initExpandedRow(record)}
+          />
+        </Col>
+        <Col span={4}>
+          <Button onClick={this.saveControlsConfig} type="primary">保存</Button>
+        </Col>
+      </Row>
+      {/* </Form> */}
       <Drawer
         title="控件信息"
         placement="right"
@@ -180,4 +186,4 @@ class ConfigView extends Component {
   }
 }
 
-export default Form.create()(ConfigView)
+export default ConfigView
