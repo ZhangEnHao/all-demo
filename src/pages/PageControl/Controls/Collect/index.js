@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Button } from 'antd';
+import { Card, Row, Col, Button, Table,  } from 'antd';
 import store from '../../Store';
 
 
@@ -23,9 +23,18 @@ class Collect extends Component {
 
 
   render() {
+    const tableProps = {
+      rowKey: "id",
+      pagination: false,
+      bordered: true,
+      size: "middle",
+      scroll: { y: "calc(85vh - 100px)" },
+    }
 
     return (
-      <Card title={""} >
+      <Card bodyStyle={{padding: 0}} bordered={false}>
+        <Table 
+          {...tableProps} />
         <Row>
           <Col span={24}>
             { JSON.stringify(this.props) }

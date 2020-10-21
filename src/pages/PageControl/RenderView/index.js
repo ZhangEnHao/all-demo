@@ -37,7 +37,7 @@ class RenderView extends Component {
   }
 
   render() {
-    return (<Card>
+    return (<Card bodyStyle={{padding: "0 20px"}}>
       { this.initControls()}
     </Card>)
   }

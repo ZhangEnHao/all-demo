@@ -4,20 +4,20 @@ export default {
   icon: "control",
   presentation: "参数录入表介绍",
   controlledProps: [
-    // {
-    //   code: "devicesInfo",
-    //   label: "主机信息",
-    //   parameterType: "controlledProps",
-    //   type: "Select",
-    //   rules: [{ required: true, message: `请选择主机信息来源组件!` }],
-    // },
-    // {
-    //   code: "collectionInfo",
-    //   label: "采集表信息",
-    //   parameterType: "controlledProps",
-    //   type: "Select",
-    //   rules: [{ required: true, message: `请选择采集表信息来源组件!` }],
-    // }
+    {
+      code: "devicesInfo",
+      label: "主机信息",
+      parameterType: "controlledProps",
+      type: "Select",
+      rules: [{ required: true, message: `请选择主机信息来源组件!` }],
+    },
+    {
+      code: "collectionInfo",
+      label: "采集表信息",
+      parameterType: "controlledProps",
+      type: "Select",
+      rules: [{ required: true, message: `请选择采集表信息来源组件!` }],
+    }
   ],
   privateProps: [
     {

@@ -38,7 +38,7 @@ class Pages extends Component {
     return (
       <Layout className="root-layout">
         <Layout>
-          <Sider
+          {/* <Sider
             theme="light"
             trigger={null} collapsible collapsed={this.state.collapsed}
             width="130"
@@ -49,7 +49,7 @@ class Pages extends Component {
               className="root-collapsible">
               <Icon type={this.state.collapsed ? 'double-right' : 'double-left'} />
             </div>
-          </Sider>
+          </Sider> */}
           <Content id="content">
             <Switch>
               <Route path="/processDesign" exact component={ProcessDesign} />

@@ -253,6 +253,7 @@ class EditForm extends Component {
           <Select
             {...otherProps}
             showSearch
+            dropdownMatchSelectWidth={false}
             filterOption={(input, option) => {
               return (new RegExp(input, "i").test(option.props.children)) || (new RegExp(input, "i").test(option.props.value))
             }}
@@ -275,6 +276,7 @@ class EditForm extends Component {
             mode="multiple"
             {...otherProps}
             showSearch
+            dropdownMatchSelectWidth={false}
             filterOption={(input, option) => {
               return (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) || (option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0) || (option.props.children.indexOf(input) >= 0) || (option.props.value.indexOf(input) >= 0)
 
